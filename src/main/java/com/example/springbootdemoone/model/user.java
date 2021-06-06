@@ -5,6 +5,10 @@ public class user {
 
     private String usepassword;
 
+    private String avatarurl;
+
+    private String nickname;
+
     public String getUsername() {
         return username;
     }
@@ -19,5 +23,21 @@ public class user {
 
     public void setUsepassword(String usepassword) {
         this.usepassword = usepassword;
+    }
+
+    public String getAvatarurl() {
+        return avatarurl;
+    }
+
+    public void setAvatarurl(String avatarurl) {
+        this.avatarurl = avatarurl;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

@@ -2,6 +2,8 @@ package com.example.springbootdemoone.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springbootdemoone.Config.Auther;
+import com.example.springbootdemoone.model.user;
+import com.example.springbootdemoone.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,13 @@ import java.util.*;
 @CrossOrigin(origins = "http://localhost:8080",maxAge = 3600)
 @Api(tags="index的接口")
 public class IndexController {
-    @RequestMapping(value ="/say",method = RequestMethod.GET)
-    @ApiOperation("say hello的接口")
-    public @ResponseBody String say(String words){
-        return "Hello"+words;
+    @Autowired
+    private UserService userService;
+    @RequestMapping(value ="/getUserInfo",method = RequestMethod.GET)
+    @ApiOperation("获取用户信息的接口")
+    public @ResponseBody Object getUserInfo(String username){
+        user userinfo = userService.queryUserByUsername(username);
+        return userinfo;
     }
 
 
@@ -39,6 +44,19 @@ public class IndexController {
         Hignclass class1=new Hignclass(50,"高一1308班");
         namemap.put("firstclass",class1);
         return namemap;
+    }
+
+    @RequestMapping(value = "register",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+     public  @ResponseBody String register(@RequestBody JSONObject jsonParam){
+        JSONObject result=new JSONObject();
+        user newuser=new user();
+        newuser.setUsername(jsonParam.getString("username"));
+        newuser.setUsepassword(jsonParam.getString("password"));
+        newuser.setNickname(jsonParam.getString("nickname"));
+        newuser.setAvatarurl(jsonParam.getString("avatarurl"));
+        int code =userService.insertUserSelective(newuser);
+        result.put("code",code);
+        return result.toJSONString();
     }
 
     @RequestMapping(value="/login",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
